@@ -1,0 +1,86 @@
+{
+  "items": [
+    {
+      "id": "create-event",
+      "label": "Creates an event in its local time zone and opens ticket sales.",
+      "steps": [
+        {
+          "enterAs": "owner"
+        },
+        {
+          "goto": "/organiser"
+        },
+        {
+          "fill": "Event title",
+          "value": "Community evening"
+        },
+        {
+          "fill": "Venue",
+          "value": "Town Hall"
+        },
+        {
+          "select": "Category",
+          "option": "Community"
+        },
+        {
+          "fill": "Event time zone",
+          "value": "Europe/London"
+        },
+        {
+          "fill": "Starts (event local time)",
+          "value": "2030-06-15T18:00"
+        },
+        {
+          "fill": "Ends (event local time)",
+          "value": "2030-06-15T21:00"
+        },
+        {
+          "click": "Create event"
+        },
+        {
+          "expectText": "Saved."
+        },
+        {
+          "select": "Event",
+          "option": "Community evening"
+        },
+        {
+          "fill": "Ticket name",
+          "value": "General admission"
+        },
+        {
+          "fill": "Price per ticket",
+          "value": "0"
+        },
+        {
+          "fill": "Capacity",
+          "value": "5"
+        },
+        {
+          "fill": "Sales start (event local time)",
+          "value": "2020-01-01T00:00"
+        },
+        {
+          "fill": "Sales end (event local time)",
+          "value": "2030-06-15T18:00"
+        },
+        {
+          "click": "Add ticket type"
+        },
+        {
+          "expectText": "Saved."
+        },
+        {
+          "goto": "/"
+        },
+        {
+          "expectText": "Community evening"
+        },
+        {
+          "expectText": "General admission"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

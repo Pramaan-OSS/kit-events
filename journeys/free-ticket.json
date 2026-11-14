@@ -1,0 +1,106 @@
+{
+  "items": [
+    {
+      "id": "free-ticket",
+      "label": "Signs up at checkout and reserves a free ticket.",
+      "steps": [
+        {
+          "enterAs": "owner"
+        },
+        {
+          "goto": "/organiser"
+        },
+        {
+          "fill": "Event title",
+          "value": "Community evening"
+        },
+        {
+          "fill": "Venue",
+          "value": "Town Hall"
+        },
+        {
+          "select": "Category",
+          "option": "Community"
+        },
+        {
+          "fill": "Event time zone",
+          "value": "Europe/London"
+        },
+        {
+          "fill": "Starts (event local time)",
+          "value": "2030-06-15T18:00"
+        },
+        {
+          "fill": "Ends (event local time)",
+          "value": "2030-06-15T21:00"
+        },
+        {
+          "click": "Create event"
+        },
+        {
+          "expectText": "Saved."
+        },
+        {
+          "select": "Event",
+          "option": "Community evening"
+        },
+        {
+          "fill": "Ticket name",
+          "value": "General admission"
+        },
+        {
+          "fill": "Price per ticket",
+          "value": "0"
+        },
+        {
+          "fill": "Capacity",
+          "value": "5"
+        },
+        {
+          "fill": "Sales start (event local time)",
+          "value": "2020-01-01T00:00"
+        },
+        {
+          "fill": "Sales end (event local time)",
+          "value": "2030-06-15T18:00"
+        },
+        {
+          "click": "Add ticket type"
+        },
+        {
+          "expectText": "Saved."
+        },
+        {
+          "click": "Sign out"
+        },
+        {
+          "goto": "/signin"
+        },
+        {
+          "click": "New here? Create attendee account"
+        },
+        {
+          "fill": "Email",
+          "value": "attendee@example.test"
+        },
+        {
+          "fill": "Password",
+          "value": "Attendee-test-passphrase-23"
+        },
+        {
+          "click": "Create account"
+        },
+        {
+          "expectHeading": "Make room for something good."
+        },
+        {
+          "click": "Get tickets"
+        },
+        {
+          "expectText": "Ready for the door"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

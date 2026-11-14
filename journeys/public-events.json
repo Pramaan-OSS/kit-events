@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "public-events",
+      "label": "Browses public events without signing in.",
+      "steps": [
+        {
+          "goto": "/"
+        },
+        {
+          "expectHeading": "Make room for something good."
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

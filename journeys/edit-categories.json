@@ -1,0 +1,43 @@
+{
+  "items": [
+    {
+      "id": "edit-categories",
+      "label": "Adds an event category and removes it when unused.",
+      "steps": [
+        {
+          "enterAs": "owner"
+        },
+        {
+          "goto": "/organiser"
+        },
+        {
+          "fill": "New category",
+          "value": "Evening social"
+        },
+        {
+          "click": "Add category"
+        },
+        {
+          "expectText": "Saved."
+        },
+        {
+          "fill": "Category name Evening social",
+          "value": "Celebrations"
+        },
+        {
+          "click": "Rename Evening social"
+        },
+        {
+          "expectText": "Saved."
+        },
+        {
+          "click": "Remove Celebrations"
+        },
+        {
+          "expectText": "Category removed."
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

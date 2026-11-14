@@ -1,0 +1,49 @@
+{
+  "kit": "events",
+  "version": "0.1.0",
+  "digest": "sha256:703f0b23e590148f5cc930dac36d36648bd7247a979cc158305f04e0234ac4e4",
+  "contract": "1",
+  "green": false,
+  "ranAt": "2026-11-14T03:34:23.501Z",
+  "run": null,
+  "gates": [
+    {
+      "id": "contract",
+      "ok": true,
+      "evidence": "93 files, 5 migrations, 13 journeys"
+    },
+    {
+      "id": "licence",
+      "ok": true,
+      "evidence": "MIT; fresh, written by person"
+    },
+    {
+      "id": "secrets",
+      "ok": true,
+      "evidence": "Scanned 94 source files for credential-shaped material."
+    },
+    {
+      "id": "install",
+      "ok": false,
+      "evidence": "Official local run stopped with CHAT_INSTALL_NETWORK_UNVERIFIED. The platform requires a verified registry-only install network; no hosted run was performed."
+    }
+  ],
+  "measured": {
+    "on": "2026-11-14",
+    "by": "person",
+    "draft": {
+      "peakMiB": 1329,
+      "limitMiB": 2560,
+      "firstAnswerSeconds": 5
+    },
+    "verifier": {
+      "peakMiB": 1473,
+      "limitMiB": 2048,
+      "seconds": 27
+    },
+    "browser": {
+      "peakMiB": 553,
+      "limitMiB": 1024
+    }
+  }
+}

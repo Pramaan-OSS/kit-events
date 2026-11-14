@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "blocks": [
+    {
+      "id": "checkout",
+      "version": "0.1.0",
+      "source": "Pramaan-OSS/blocks",
+      "sourceCommit": "4577cabca086a430563c196b6cd86cc919f873c0",
+      "sourcePath": "registry/checkout",
+      "licence": "MIT",
+      "sourceHashes": {
+        "registry/checkout/README.md": "22aeef6aef4e2b6e3fa6adb3c13b4d7a75d3fce21da34ac6c6eaa40f6ee9db47",
+        "registry/checkout/lib/pramaan/checkout.ts": "f73f71b5b2b2e390b93ddadd740fff32d0b3f3108ead2937b7fc6c917ab80b83"
+      }
+    },
+    {
+      "id": "theme",
+      "version": "0.1.0",
+      "source": "Pramaan-OSS/blocks",
+      "sourceCommit": "4577cabca086a430563c196b6cd86cc919f873c0",
+      "sourcePath": "registry/theme",
+      "licence": "MIT",
+      "sourceHashes": {
+        "registry/theme/lib/pramaan/fonts.ts": "de90da679c962d19170f0dcd78f69558b435dd8a8aeba8b3bc176ecc754ff410"
+      }
+    },
+    {
+      "id": "password-reset",
+      "version": "0.1.0",
+      "source": "Pramaan-OSS/blocks",
+      "sourceCommit": "4577cabca086a430563c196b6cd86cc919f873c0",
+      "sourcePath": "registry/password-reset",
+      "licence": "MIT",
+      "sourceHashes": {
+        "registry/password-reset/components/pramaan/password-reset/password-panel.tsx": "21c00ff55174a2b604fe46073e643ced6d8351b4f9acd140d1abaf49adb0bd08"
+      }
+    },
+    {
+      "id": "roles",
+      "version": "0.1.0",
+      "source": "Pramaan-Dev/product-loop",
+      "sourceCommit": "fbc5505d5dffed1e5410359ff65d59d21c872d21",
+      "sourcePath": "blocks/roles",
+      "sourceHashes": {
+        "BLOCK.md": "10b6565b67973583dae140afe35b264dd8b2ad0b14f502c943a10a7f5343632d",
+        "files/lib/roles/http.ts": "4d3310796b8eb9f3356b5b980963a9ef0aad340f2b9a9c57d3639b3e1917b1e4",
+        "pramaan.block.json": "5f8231d9eb063f5714a67297dbada669a94927315a3a9a9d1539727e5730f9bc"
+      }
+    }
+  ],
+  "adaptations": {
+    "checkout": "Reuses the block rules: server-owned prices, hosted checkout, and captured-payment confirmation. Reimplemented through the starter HTTP client in lib/pramaan.ts; no SDK. Added row-locked holds, durable retry keys, exact currency and amount checks, and late-payment review.",
+    "theme": "Uses the bundled starter fonts and theme tokens rather than remote fonts. Gather adds event cards and responsive organiser forms in app/theme.css.",
+    "password-reset": "Reuses request/reset forms and one-time-proof rules. The unchanged accounts module owns verification, reset and sessions; app/password-reset and the starter reset-password form use the platform email module.",
+    "roles": "Reuse lib/roles/http.ts byte for byte: bounded same-origin JSON requests and no-cache error responses. Roles are checked with the unchanged accounts module; event queries enforce attendee ownership on the server."
+  }
+}

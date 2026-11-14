@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "id": "add-door-staff",
+      "label": "Adds a door-only staff account.",
+      "steps": [
+        {
+          "enterAs": "owner"
+        },
+        {
+          "goto": "/organiser"
+        },
+        {
+          "fill": "Staff email",
+          "value": "door@example.test"
+        },
+        {
+          "fill": "Staff password (12+ characters)",
+          "value": "Door-test-passphrase-23"
+        },
+        {
+          "click": "Add door staff"
+        },
+        {
+          "expectText": "door@example.test"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

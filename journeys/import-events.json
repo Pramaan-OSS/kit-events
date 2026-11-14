@@ -1,0 +1,33 @@
+{
+  "items": [
+    {
+      "id": "import-events",
+      "label": "Imports event rows from a CSV file.",
+      "steps": [
+        {
+          "enterAs": "owner"
+        },
+        {
+          "goto": "/organiser"
+        },
+        {
+          "fill": "CSV content",
+          "value": "title,venue,category,startsAt,endsAt,timezone\nImported evening,Town Hall,Community,2030-06-15T18:00:00+01:00,2030-06-15T21:00:00+01:00,Europe/London"
+        },
+        {
+          "click": "Import events"
+        },
+        {
+          "expectText": "Saved."
+        },
+        {
+          "goto": "/"
+        },
+        {
+          "expectText": "Imported evening"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}

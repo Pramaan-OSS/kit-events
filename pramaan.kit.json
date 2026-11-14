@@ -1,0 +1,226 @@
+{
+  "id": "events",
+  "version": "0.1.0",
+  "title": "Events and tickets",
+  "summary": "Sell tickets, welcome attendees and check each ticket in once. Owners manage events and door staff; attendees see only their own tickets.",
+  "category": "business-operations",
+  "stack": {
+    "contract": "1",
+    "template": "data",
+    "next": "16.3.6",
+    "react": "19.3.0",
+    "node": "24.18.0",
+    "packageManager": "pnpm@11.15.1"
+  },
+  "licence": "MIT",
+  "provenance": {
+    "mode": "fresh",
+    "starter": "Pramaan-Dev/product-loop@370419379645405019af029fa08a75680ad75c8b",
+    "derivedFrom": [],
+    "writtenBy": "person"
+  },
+  "measured": {
+    "on": "2026-11-14",
+    "by": "person",
+    "draft": {
+      "peakMiB": 1329,
+      "limitMiB": 2560,
+      "firstAnswerSeconds": 5
+    },
+    "verifier": {
+      "peakMiB": 1473,
+      "limitMiB": 2048,
+      "seconds": 27
+    },
+    "browser": {
+      "peakMiB": 553,
+      "limitMiB": 1024
+    }
+  },
+  "entryPoints": [
+    {
+      "route": "/",
+      "file": "app/page.tsx",
+      "audience": "visitor",
+      "summary": "Browse public events and ticket types."
+    },
+    {
+      "route": "/signin",
+      "file": "app/signin/page.tsx",
+      "audience": "visitor",
+      "summary": "Sign in or create an attendee account."
+    },
+    {
+      "route": "/tickets",
+      "file": "app/tickets/page.tsx",
+      "audience": "member",
+      "summary": "See only your orders and ticket codes."
+    },
+    {
+      "route": "/organiser",
+      "file": "app/organiser/page.tsx",
+      "audience": "owner",
+      "summary": "Manage events, ticket types, categories, staff, imports and attendee exports."
+    },
+    {
+      "route": "/door",
+      "file": "app/door/page.tsx",
+      "audience": "door",
+      "summary": "Check in one ticket code once."
+    },
+    {
+      "route": "/owner",
+      "file": "app/owner/page.tsx",
+      "audience": "owner",
+      "summary": "Set owner sign-in details."
+    },
+    {
+      "route": "/password-reset",
+      "file": "app/password-reset/page.tsx",
+      "audience": "visitor",
+      "summary": "Request password recovery through email."
+    },
+    {
+      "route": "/reset-password",
+      "file": "app/reset-password/page.tsx",
+      "audience": "visitor",
+      "summary": "Set a new password with a one-time proof."
+    }
+  ],
+  "roles": {
+    "owner": {
+      "source": "owner-pass",
+      "summary": "Manages events, staff, categories and outside refund records."
+    },
+    "door": {
+      "source": "added-by-owner",
+      "summary": "Signs in to check tickets in; no attendee lists or management access."
+    },
+    "member": {
+      "source": "public-sign-up",
+      "summary": "An attendee: signs up at checkout and sees only their own tickets."
+    },
+    "visitor": {
+      "source": "anonymous",
+      "summary": "Browses public event pages and sign-in."
+    }
+  },
+  "journeys": [
+    {
+      "id": "create-event",
+      "role": "owner",
+      "summary": "Creates an event in its local time zone and opens ticket sales.",
+      "status": "ships-working",
+      "checklist": "journeys/create-event.json"
+    },
+    {
+      "id": "edit-categories",
+      "role": "owner",
+      "summary": "Adds an event category and removes it when unused.",
+      "status": "ships-working",
+      "checklist": "journeys/edit-categories.json"
+    },
+    {
+      "id": "add-door-staff",
+      "role": "owner",
+      "summary": "Adds a door-only staff account.",
+      "status": "ships-working",
+      "checklist": "journeys/add-door-staff.json"
+    },
+    {
+      "id": "free-ticket",
+      "role": "member",
+      "summary": "Signs up at checkout and reserves a free ticket.",
+      "status": "ships-working",
+      "checklist": "journeys/free-ticket.json"
+    },
+    {
+      "id": "public-events",
+      "role": "visitor",
+      "summary": "Browses public events without signing in.",
+      "status": "ships-working",
+      "checklist": "journeys/public-events.json"
+    },
+    {
+      "id": "owner-settings",
+      "role": "owner",
+      "summary": "Opens the owner settings through a one-use pass.",
+      "status": "ships-working",
+      "checklist": "journeys/owner-settings.json"
+    },
+    {
+      "id": "password-reset-off",
+      "role": "visitor",
+      "summary": "Explains the email requirement for password recovery.",
+      "status": "ships-working",
+      "checklist": "journeys/password-reset-off.json"
+    },
+    {
+      "id": "buy-paid-ticket",
+      "role": "member",
+      "summary": "Pays in test mode; tickets issue only after the server verifies captured payment.",
+      "status": "needs-capability",
+      "capability": "external_http"
+    },
+    {
+      "id": "ticket-email",
+      "role": "member",
+      "summary": "Receives ticket codes through the email module after confirming the address.",
+      "status": "needs-capability",
+      "capability": "email"
+    },
+    {
+      "id": "refund-payment",
+      "role": "owner",
+      "summary": "Needs a refund-create capability. Complete refunds outside the app, then record them.",
+      "status": "needs-capability",
+      "capability": "external_http"
+    },
+    {
+      "id": "door-checkin",
+      "role": "door",
+      "summary": "Checks in a code once and refuses its second use.",
+      "status": "not-testable",
+      "reason": "The random ticket code must be taken from an attendee session; scripts/walk.mjs proves both scans with separate authenticated browsers."
+    },
+    {
+      "id": "attendees-csv",
+      "role": "owner",
+      "summary": "Exports attendees for an event.",
+      "status": "not-testable",
+      "reason": "The trusted checklist cannot inspect downloaded CSV bytes; database tests and scripts/walk.mjs read the export."
+    },
+    {
+      "id": "import-events",
+      "role": "owner",
+      "summary": "Imports event rows from a CSV file.",
+      "status": "ships-working",
+      "checklist": "journeys/import-events.json"
+    }
+  ],
+  "capabilities": [
+    "accounts",
+    "server_data",
+    "roles",
+    "email",
+    "external_http",
+    "file_input",
+    "download"
+  ],
+  "notIncluded": [
+    "Payment and email modules are off by default; payment connections must be configured for test mode. No live paid calls were made.",
+    "Refund creation is unavailable. The owner records a completed outside refund with a note before paid seats release.",
+    "Late payments after an expired or cancelled hold require organiser review and an outside refund; no ticket is issued.",
+    "Ticket emails and password recovery need a confirmed email address and a configured sender.",
+    "Going live requires the platform live database, which is off by default.",
+    "Attendees cannot change their password while signed in.",
+    "One ticket type per order, up to ten tickets. Door check-in accepts pasted codes; camera scanning is not included.",
+    "Lists are bounded: 500 events, 100 attendee orders, 1000 tickets and 10000 attendee export rows."
+  ],
+  "protectedPaths": [
+    "lib/accounts.ts",
+    "lib/events/orders.ts",
+    "lib/events/data.ts",
+    "lib/roles/http.ts"
+  ]
+}

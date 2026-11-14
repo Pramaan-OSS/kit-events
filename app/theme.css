@@ -1,0 +1,326 @@
+/* Generated from DESIGN.md by scripts/generate-theme.mjs (pnpm theme). Editable starting point. */
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #f7f7f5;
+  --color-surface: #ffffff;
+  --color-fg: #1c1c1a;
+  --color-muted: #5f5f5a;
+  --color-line: #d9d9d4;
+  --color-accent: #2f5bd3;
+  --color-accent-fg: #ffffff;
+  --color-danger: #b42318;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --text-sans: 1rem;
+  --text-mono: 1rem;
+  --text-title: 1.5rem;
+  --text-label: 1rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+
+@utility weight-sans {
+  font-weight: 400;
+}
+
+@utility weight-mono {
+  font-weight: 400;
+}
+
+@utility weight-title {
+  font-weight: 600;
+}
+
+@utility weight-label {
+  font-weight: 500;
+}
+
+@utility button-primary {
+  background-color: var(--color-accent);
+  color: var(--color-accent-fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+}
+
+@utility button-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-fg);
+  border: 1px solid var(--color-line);
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: 500;
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 1rem;
+}
+
+@utility input {
+  background-color: var(--color-surface);
+  color: var(--color-fg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem;
+}
+
+@utility card {
+  background-color: var(--color-surface);
+  color: var(--color-fg);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  padding: 1rem;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-fg font-sans antialiased;
+  }
+}
+
+/* Gather's event and ticket screens. */
+.topbar {
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+.topbar nav {
+  max-width: 1200px;
+  margin: auto;
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.brand {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-decoration: none;
+}
+.brand span {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.navlinks,
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.workspace {
+  max-width: 1200px;
+  margin: auto;
+  padding: 64px 28px;
+  min-height: 75vh;
+}
+.workspace h1 {
+  font-size: clamp(32px, 5vw, 60px);
+  line-height: 1.08;
+  letter-spacing: -2px;
+  max-width: 850px;
+  margin: 12px 0 24px;
+  font-weight: 650;
+}
+.workspace h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+.workspace h3 {
+  font-weight: 600;
+  font-size: 17px;
+}
+.workspace p {
+  margin: 12px 0;
+  line-height: 1.65;
+}
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-muted);
+}
+.lede {
+  font-size: 18px;
+  color: var(--color-muted);
+  max-width: 720px;
+}
+.notice {
+  padding: 14px 18px;
+  background: #ecefe4;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.event-grid,
+.manage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+  margin-top: 32px;
+}
+.event-card,
+.workspace section {
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+.workspace section {
+  padding: 28px;
+  margin: 24px 0;
+}
+.manage-grid section {
+  margin: 0;
+}
+.event-art {
+  background: #dce4cf;
+  padding: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 150px;
+  font-size: 28px;
+}
+.event-card:nth-child(2n) .event-art {
+  background: #f0dac8;
+}
+.event-art b {
+  font-size: 72px;
+  line-height: 1;
+}
+.card-body {
+  padding: 28px;
+}
+.muted {
+  color: var(--color-muted);
+  font-size: 14px;
+}
+.workspace label {
+  display: grid;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 16px 0;
+}
+.workspace input,
+.workspace select,
+.workspace textarea {
+  width: 100%;
+  background: var(--color-bg);
+  border: 1px solid #a5aaa1;
+  border-radius: 7px;
+  padding: 11px 12px;
+  font: inherit;
+  min-width: 0;
+}
+.workspace button,
+.quiet {
+  cursor: pointer;
+}
+.workspace button {
+  background: #273d2b;
+  color: white;
+  border: 1px solid #273d2b;
+  border-radius: 7px;
+  padding: 11px 16px;
+  font: inherit;
+  font-size: 14px;
+}
+.workspace button.quiet,
+.quiet {
+  background: transparent;
+  color: var(--color-fg);
+  border: 0;
+  text-decoration: underline;
+}
+.workspace button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.workspace a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.ticket-choice {
+  border-top: 1px solid var(--color-line);
+  margin-top: 24px;
+  padding-top: 20px;
+}
+.ticket-choice h3 {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ticket-choice label {
+  max-width: 110px;
+}
+.narrow {
+  max-width: 560px;
+}
+.ticket {
+  padding: 20px;
+  border: 1px dashed #889b7b;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+.ticket code {
+  overflow-wrap: anywhere;
+  font-size: 15px;
+}
+.inline-form {
+  border-top: 1px solid var(--color-line);
+  padding: 12px 0;
+}
+.inline-form button {
+  margin-right: 10px;
+}
+.table-wrap {
+  overflow: auto;
+}
+table {
+  width: 100%;
+  text-align: left;
+}
+td,
+th {
+  padding: 15px;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: top;
+}
+footer {
+  border-top: 1px solid var(--color-line);
+  padding: 28px;
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 13px;
+}
+@media (max-width: 700px) {
+  .event-grid,
+  .manage-grid {
+    grid-template-columns: 1fr;
+  }
+  .workspace {
+    padding: 40px 18px;
+  }
+  .topbar nav {
+    padding: 20px 18px;
+  }
+  .navlinks {
+    gap: 12px;
+    font-size: 13px;
+  }
+  .workspace section,
+  .card-body {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "id": "owner-settings",
+      "label": "Opens the owner settings through a one-use pass.",
+      "steps": [
+        {
+          "enterAs": "owner"
+        },
+        {
+          "expectHeading": "Owner area"
+        }
+      ]
+    }
+  ],
+  "names": {}
+}
