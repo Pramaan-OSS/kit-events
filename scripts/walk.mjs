@@ -12,7 +12,8 @@ const browserModule = process.env.WALK_BROWSER_MODULE ?? process.env.WALK_PLAYWR
 const { chromium, expect } = await import(
   browserModule ? pathToFileURL(browserModule).href : "@playwright/test"
 );
-const origin = "http://127.0.0.1:3470",
+const port = Number(process.env.WALK_PORT ?? 3470),
+  origin = `http://127.0.0.1:${port}`,
   secret = randomBytes(32).toString("hex"),
   project = "events-local";
 if (!process.env.DATABASE_URL) throw Error("Use a disposable DATABASE_URL for the walk.");
@@ -58,7 +59,7 @@ function pass(overrides = {}) {
 async function serve(withDoor) {
   const child = spawn(
     process.execPath,
-    ["node_modules/next/dist/bin/next", "start", "-p", "3470", "-H", "127.0.0.1"],
+    ["node_modules/next/dist/bin/next", "start", "-p", String(port), "-H", "127.0.0.1"],
     {
       stdio: ["ignore", "ignore", "inherit"],
       env: {
@@ -139,6 +140,17 @@ async function step(p, ctx, s) {
     await expect(p.getByRole("heading", { name: s.expectHeading, exact: true })).toBeVisible();
   else throw Error("Unsupported checklist step");
 }
+// As kit CI does: who the app says is signed in at each check, and a journey not for the owner or a visitor needs one
+// check signed in, in a browser entered as its own role.
+async function sessionRole(p) {
+  const r = await p.request.get("/api/account/session");
+  return r.ok() ? ((await r.json()).user?.role ?? null) : null;
+}
+function provenSignedIn(j, roles, seen) {
+  if (j.role === "owner") return seen.some((s) => s.as === "owner" && s.role === "owner");
+  if (roles[j.role]?.source === "anonymous") return true;
+  return seen.some((s) => s.as === j.role && typeof s.role === "string" && s.role !== "owner");
+}
 const note = (s) => {
   checks.push(s);
   console.log(`Passed ${s}`);
@@ -161,7 +173,7 @@ async function signUp(ctx, email) {
   return p;
 }
 let stop;
-const door = await startFakeDoor({ dir: doorDir, port: 3471 });
+const door = await startFakeDoor({ dir: doorDir, port: port + 1 });
 try {
   stop = await serve(false);
   const manifest = JSON.parse(readFileSync("pramaan.kit.json", "utf8"));
@@ -169,12 +181,19 @@ try {
     await reset();
     const run = { contexts: [await context()], named: new Map() };
     let p = await page(run.contexts[0]);
+    const seen = [];
     try {
-      for (const item of JSON.parse(readFileSync(j.checklist, "utf8")).items)
+      for (const item of JSON.parse(readFileSync(j.checklist, "utf8")).items) {
+        let as = null;
         for (const s of item.steps) {
-          if (s.enterAs) p = await enter(run, s);
+          if (s.enterAs) [p, as] = [await enter(run, s), s.enterAs];
           else await step(p, null, s);
+          if (Object.keys(s).some((k) => k.startsWith("expect")))
+            seen.push({ as, role: await sessionRole(p) });
         }
+      }
+      if (!provenSignedIn(j, manifest.roles, seen))
+        throw Error(`no check ran signed in as ${j.role}: ${JSON.stringify(seen)}`);
       await p.screenshot({ path: `.evidence/${j.id}.png`, fullPage: true });
       journeys.push({ id: j.id, ok: true });
       console.log(`Passed journey ${j.id}`);

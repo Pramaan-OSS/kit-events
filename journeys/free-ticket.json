@@ -71,7 +71,7 @@
           "expectText": "Saved."
         },
         {
-          "enterAs": "visitor"
+          "enterAs": "member"
         },
         {
           "goto": "/signin"
