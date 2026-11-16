@@ -71,7 +71,7 @@
           "expectText": "Saved."
         },
         {
-          "click": "Sign out"
+          "enterAs": "visitor"
         },
         {
           "goto": "/signin"

@@ -1,13 +1,17 @@
 // Headless acceptance: every working checklist, then paid checkout, email, door, races and server isolation.
-// Set WALK_PLAYWRIGHT_MODULE to an existing @playwright/test module; the starter dependencies stay unchanged.
+// Set WALK_BROWSER_MODULE to an installed @playwright/test (its index.mjs); the starter dependencies stay unchanged.
 import { execFileSync, spawn } from "node:child_process";
 import { createHmac, randomBytes } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 import { startFakeDoor } from "./fake-door.mjs";
 
-const { chromium, expect } = await import(process.env.WALK_PLAYWRIGHT_MODULE ?? "@playwright/test");
+const browserModule = process.env.WALK_BROWSER_MODULE ?? process.env.WALK_PLAYWRIGHT_MODULE;
+const { chromium, expect } = await import(
+  browserModule ? pathToFileURL(browserModule).href : "@playwright/test"
+);
 const origin = "http://127.0.0.1:3470",
   secret = randomBytes(32).toString("hex"),
   project = "events-local";
@@ -106,12 +110,21 @@ async function page(ctx) {
   p.on("pageerror", (e) => errors.push(e.message));
   return p;
 }
+// As the gate does: enterAs opens a fresh browser at home (signed out; the owner's signs in with a pass), and an
+// enterAs with "as" returns to that named person's browser.
+async function enter(run, s) {
+  const key = `${s.enterAs}\u0000${s.as ?? ""}`;
+  if (s.as && run.named.has(key)) return run.named.get(key);
+  const ctx = await context();
+  run.contexts.push(ctx);
+  const p = await page(ctx);
+  await p.goto(s.enterAs === "owner" ? `/api/account/owner-pass?token=${pass()}` : "/");
+  if (s.as) run.named.set(key, p);
+  return p;
+}
 async function step(p, ctx, s) {
   if (s.enterAs === "owner") await p.goto(`/api/account/owner-pass?token=${pass()}`);
-  else if (s.enterAs === "visitor") {
-    await ctx.clearCookies();
-    await p.goto("/");
-  } else if (s.goto) await p.goto(s.goto);
+  else if (s.goto) await p.goto(s.goto);
   else if (s.fill) await p.getByLabel(s.fill, { exact: true }).fill(s.value);
   else if (s.select)
     await p.getByLabel(s.select, { exact: true }).selectOption({ label: s.option });
@@ -154,11 +167,14 @@ try {
   const manifest = JSON.parse(readFileSync("pramaan.kit.json", "utf8"));
   for (const j of manifest.journeys.filter((j) => j.status === "ships-working")) {
     await reset();
-    const ctx = await context(),
-      p = await page(ctx);
+    const run = { contexts: [await context()], named: new Map() };
+    let p = await page(run.contexts[0]);
     try {
       for (const item of JSON.parse(readFileSync(j.checklist, "utf8")).items)
-        for (const s of item.steps) await step(p, ctx, s);
+        for (const s of item.steps) {
+          if (s.enterAs) p = await enter(run, s);
+          else await step(p, null, s);
+        }
       await p.screenshot({ path: `.evidence/${j.id}.png`, fullPage: true });
       journeys.push({ id: j.id, ok: true });
       console.log(`Passed journey ${j.id}`);
@@ -166,7 +182,7 @@ try {
       await p.screenshot({ path: `.evidence/failed-${j.id}.png`, fullPage: true });
       throw Error(`${j.id}: ${e.message}`);
     } finally {
-      await ctx.close();
+      for (const ctx of run.contexts) await ctx.close();
     }
   }
   await stop();
