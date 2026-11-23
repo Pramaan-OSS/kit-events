@@ -1,6 +1,6 @@
 {
   "id": "events",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "title": "Events and tickets",
   "summary": "Sell tickets, welcome attendees and check each ticket in once. Owners manage events and door staff; attendees see only their own tickets.",
   "category": "business-operations",

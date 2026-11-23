@@ -81,7 +81,7 @@
         },
         {
           "fill": "Email",
-          "value": "attendee@example.test"
+          "value": "delivered+events-attendee@resend.dev"
         },
         {
           "fill": "Password",

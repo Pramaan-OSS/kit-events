@@ -243,26 +243,32 @@ try {
   });
   const staff = await json(owner, "/api/events/manage", {
     action: "staff",
-    email: "door@local.test",
+    email: "delivered+events-door-2@resend.dev",
     password: "Door-test-passphrase-23",
   });
   expect(staff.status).toBe(200);
   await op.close();
   const a = await context(),
-    ap = await signUp(a, "alice@local.test");
+    ap = await signUp(a, "delivered+events-alice@resend.dev");
   // The confirmation is delivered through the fake email module, never marked from the browser.
   await expect
     .poll(() =>
-      door.mail.find((m) => m.to === "alice@local.test" && m.text.includes("/api/account/verify?")),
+      door.mail.find(
+        (m) =>
+          m.to === "delivered+events-alice@resend.dev" && m.text.includes("/api/account/verify?"),
+      ),
     )
     .toBeTruthy();
   const link = door.mail
-    .find((m) => m.to === "alice@local.test" && m.text.includes("/api/account/verify?"))
+    .find(
+      (m) =>
+        m.to === "delivered+events-alice@resend.dev" && m.text.includes("/api/account/verify?"),
+    )
     .text.match(/http[^\s]+\/api\/account\/verify\?token=[^\s]+/u)?.[0];
   expect(link).toBeTruthy();
   await ap.goto(link);
   const b = await context(),
-    bp = await signUp(b, "bob@local.test");
+    bp = await signUp(b, "delivered+events-bob@resend.dev");
   await bp.close();
   cat = (await json(a, "/api/events/catalog")).body;
   const paid = cat.events[0].types.find((t) => t.name === "Paid admission");
@@ -287,7 +293,10 @@ try {
   await expect(ap.getByText("Ready for the door", { exact: true })).toBeVisible();
   await expect
     .poll(() =>
-      door.mail.find((m) => m.to === "alice@local.test" && m.subject.startsWith("Your tickets:")),
+      door.mail.find(
+        (m) =>
+          m.to === "delivered+events-alice@resend.dev" && m.subject.startsWith("Your tickets:"),
+      ),
     )
     .toBeTruthy();
   aOrders = (await json(a, "/api/events/tickets")).body.orders;
@@ -311,7 +320,7 @@ try {
   const d = await context(),
     dp = await page(d);
   await dp.goto("/signin");
-  await dp.getByLabel("Email", { exact: true }).fill("door@local.test");
+  await dp.getByLabel("Email", { exact: true }).fill("delivered+events-door-2@resend.dev");
   await dp.getByLabel("Password", { exact: true }).fill("Door-test-passphrase-23");
   await dp.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(dp.getByRole("heading", { name: "Make room for something good." })).toBeVisible();
@@ -332,7 +341,7 @@ try {
   note("door signs in, checks in once, repeat refused; staff permissions enforced");
   const exported = await owner.request.get(`/api/events/export?event=${event.id}`);
   expect(exported.status()).toBe(200);
-  expect(await exported.text()).toContain("alice@local.test");
+  expect(await exported.text()).toContain("delivered+events-alice@resend.dev");
   expect(await exported.text()).toContain(code);
   expect((await b.request.get(`/api/events/export?event=${event.id}`)).status()).toBe(403);
   note("attendee CSV bytes and export permissions");
@@ -389,7 +398,7 @@ try {
     expect((await visitor.request.get(url)).status()).toBe(401);
   note("signed-out private requests refused");
   const attemptedOwner = await json(visitor, "/api/account/signup", {
-    email: "role-attempt@local.test",
+    email: "delivered+events-role-attempt@resend.dev",
     password: "Attendee-test-passphrase-23",
     role: "owner",
   });

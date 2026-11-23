@@ -12,7 +12,7 @@
         },
         {
           "fill": "Staff email",
-          "value": "door@example.test"
+          "value": "delivered+events-door@resend.dev"
         },
         {
           "fill": "Staff password (12+ characters)",
@@ -22,7 +22,7 @@
           "click": "Add door staff"
         },
         {
-          "expectText": "door@example.test"
+          "expectText": "delivered+events-door@resend.dev"
         }
       ]
     }
